@@ -13,7 +13,7 @@ public class Main {
     // グループのインスタンスと初期メンバーの定義
     Group g = new Group();
     for (int i = 0; i < N; i++) {
-      g.members.add(new Idol(sc.nextLine()));
+      g.join(sc.nextLine());
     }
 
     // イベント処理
@@ -37,33 +37,48 @@ public class Main {
 }
 
 class Group {
-  List<Idol> members = new ArrayList<>();
+  // TreeSetを使って、常にソートされた状態でメンバーを保持
+  Set<Idol> members = new TreeSet<>(Comparator.comparing(idol -> idol.name));
 
   // メンバー加入
   public void join(String name) {
-    this.members.add(new Idol(name));
+    this.members.add(new Idol(name)); // Setなので自動的に重複が防がれる
   }
 
   // メンバー脱退
   public void leave(String name) {
-    this.members.removeIf(m -> m.name.equals(name));
+    this.members.remove(new Idol(name)); // removeもO(1)で実行される
   }
 
   // 握手会
   public void handshake() {
-    if (this.members.size() > 0) {
-      this.members.sort(Comparator.comparing(idol -> idol.name));
-      this.members.stream().forEach(idol -> {
-        System.out.println(idol.name);
-      });
+    if (!this.members.isEmpty()) {
+      // TreeSetは常にソートされた状態を保持するため、ソートは不要
+      for (Idol member : members) {
+        System.out.println(member.name);
+      }
     }
   }
-
 }
 
 class Idol {
   String name;
+
   public Idol(String name) {
     this.name = name;
+  }
+
+  // 名前で比較を行うようにequalsとhashCodeをオーバーライド
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Idol idol = (Idol) o;
+    return Objects.equals(name, idol.name);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name);
   }
 }
