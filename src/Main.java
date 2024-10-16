@@ -1,46 +1,36 @@
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 
 public class Main {
-  public static void main(String[] args) {
-    ArrayList<Integer> players = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+    public static void main(String[] args) {
+        CoinCase cs = new CoinCase();
+        cs.wallets.get(0).setAmount(2);
+        System.out.print(cs.wallets.get(0).getKind() + "円玉が");
+        System.out.println(cs.wallets.get(0).getAmount() + "円分");
+    }
+}
 
-    int N = 5;
-
-    ///////////////////
-    // Nターンのケース //
-    ///////////////////
-    // Iterator<Integer> it = players.iterator(); // <- イテレータ（リスト要素にカーソルを当てるイメージ）を取得
-    // for (int i = 0; i < N; i++) {
-    //   while(it.hasNext()) { // 次の要素があるか判定しtrue or falseで返す
-    //     int num = it.next(); // カーソルを次に進めるイメージ（要素を変数に代入しているが代入しなくてもOK）
-    //     // なんらかの条件: 【例】偶数番号をplayersリストから取り除く（この例だとfor文でNターン指定してる意味ないけど）
-    //     if (num % 2 == 0) {
-    //       System.out.println(String.format("プレイヤー%dを除外しました", num));
-    //       it.remove();
-    //     }
-    //   }
-    // }
-    // // 残りのプレイヤーを表示
-    // players.stream().forEach(System.out::println);
-
-    ////////////////
-    // N回のケース //
-    ////////////////
-    int count = 0;
-    Iterator<Integer> it = players.iterator();
-    while(it.hasNext() && count < N) {
-      int num = it.next();
-      // なんらかの条件: 【例】偶数番号をplayersリストから取り除く
-      if (num % 2 == 0) {
-        System.out.println(String.format("プレイヤー%dを除外しました", num));
-        it.remove();
-      }
-      count++;
+class Coin {
+    private int kind;
+    private int amount;
+    public Coin(int kind, int amount) {
+        this.kind = kind;
+        this.amount = amount;
     }
 
-    // 残りのプレイヤーを表示
-    players.forEach(System.out::println);
-  }
+    public int getKind() { return kind; }
+    public int getAmount() { return this.amount; }
+    public void setAmount(int amount) { this.amount = amount * this.kind; }
+}
+
+class CoinCase {
+    List<Coin> wallets = new ArrayList<>();
+
+    public CoinCase() {
+        this.wallets.add(new Coin(500, 0));
+        this.wallets.add(new Coin(100, 0));
+        this.wallets.add(new Coin(50, 0));
+        this.wallets.add(new Coin(10, 0));
+        this.wallets.add(new Coin(5, 0));
+        this.wallets.add(new Coin(1, 0));
+    }
 }
