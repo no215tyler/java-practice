@@ -1,36 +1,36 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class Main {
-    public static void main(String[] args) {
-        CoinCase cs = new CoinCase();
-        cs.wallets.get(0).setAmount(2);
-        System.out.print(cs.wallets.get(0).getKind() + "円玉が");
-        System.out.println(cs.wallets.get(0).getAmount() + "円分");
-    }
-}
+class Main {
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
 
-class Coin {
-    private int kind;
-    private int amount;
-    public Coin(int kind, int amount) {
-        this.kind = kind;
-        this.amount = amount;
-    }
+    // 標準入力で半角スペース区切りでList化
+    List<Integer> nums = Arrays.stream(sc.nextLine().split(" ")).map(Integer::parseInt).collect(Collectors.toList());
+    // 降順ソート
+    System.out.println("【降順ソート一括処理】");
+    Collections.sort(nums, Collections.reverseOrder());
+    nums.forEach(n -> {
+      System.out.print(String.format("%d ", n));
+    });
+    System.out.println();
 
-    public int getKind() { return kind; }
-    public int getAmount() { return this.amount; }
-    public void setAmount(int amount) { this.amount = amount * this.kind; }
-}
+    // 昇順ソート
+    System.out.println("【昇順ソート】");
+    Collections.sort(nums);
+    nums.forEach(n -> {
+      System.out.print(String.format("%d ", n));
+    });
+    System.out.println();
 
-class CoinCase {
-    List<Coin> wallets = new ArrayList<>();
+    // 昇順ソートの後に逆順にすることで降順ソートをする手法
+    System.out.println("【昇順ソート後に逆順にして実質降順ソートにする】");
+    Collections.reverse(nums);
+    nums.forEach(n -> {
+      System.out.print(String.format("%d ", n));
+    });
+    System.out.println();
 
-    public CoinCase() {
-        this.wallets.add(new Coin(500, 0));
-        this.wallets.add(new Coin(100, 0));
-        this.wallets.add(new Coin(50, 0));
-        this.wallets.add(new Coin(10, 0));
-        this.wallets.add(new Coin(5, 0));
-        this.wallets.add(new Coin(1, 0));
-    }
+    sc.close();
+  }
 }
